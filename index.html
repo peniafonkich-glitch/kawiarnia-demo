@@ -193,7 +193,17 @@
   .addr a[href^="mailto"] { font-size: clamp(16px, 4.6vw, 26px); }
   .contact > * { min-width: 0; }
   .addr .mono { display: block; color: var(--muted); margin: 20px 0 6px; }
-  .map { border: 1px solid var(--line); background: var(--ink2); aspect-ratio: 16 / 10; overflow: hidden; }
+  .map { position: relative; border: 1px solid var(--line); background: var(--ink2); aspect-ratio: 4 / 3; overflow: hidden; }
+  .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; filter: invert(.92) hue-rotate(180deg) saturate(.8) brightness(.95) contrast(.95); }
+  .map.active iframe { pointer-events: auto; }
+  .map-ping { position: absolute; left: 50%; top: 50%; z-index: 1; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 3px solid var(--yellow); border-radius: 50%; pointer-events: none; animation: pingm 2s ease-out infinite; }
+  @keyframes pingm { from { scale: .5; opacity: 1; } to { scale: 3.2; opacity: 0; } }
+  .map-card { position: absolute; left: 12px; top: 12px; z-index: 2; max-width: calc(100% - 24px); padding: 12px 16px; background: var(--yellow); color: var(--black); font: 700 16px/1.3 var(--body); pointer-events: none; }
+  .map-card span { display: block; font-weight: 500; font-size: 13px; }
+  .map-hint { position: absolute; left: 12px; bottom: 32px; z-index: 2; padding: 6px 10px; background: rgba(11, 11, 15, .85); color: var(--paper); pointer-events: none; font-size: 11px; }
+  .map.active .map-hint { display: none; }
+  .map-links { margin-top: 14px; color: var(--muted); }
+  .map-links a { color: var(--paper); text-underline-offset: 4px; }
   .pulse-r { transform-box: fill-box; transform-origin: center; animation: pr 2.2s ease-out infinite; }
   @keyframes pr { from { scale: .4; opacity: .9; } to { scale: 2.4; opacity: 0; } }
   @media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
@@ -211,7 +221,7 @@
     .js .reveal { opacity: 1; translate: 0 0; transition: none; }
     .w > span { translate: 0 0; transition: none; }
     .giant .ln > span { animation: none; }
-    .chip .dot, .pulse-r, .fb-vinyl { animation: none; }
+    .chip .dot, .pulse-r, .fb-vinyl, .map-ping { animation: none; }
     .clicked, .clicked-pop { animation: none !important; }
     .overlay, .overlay.open, .overlay a.big, .ov-foot { transition: none !important; }
     canvas#fx, .ripple { display: none; }
@@ -331,20 +341,13 @@
           <a href="mailto:sweetsurrenderkrakow@gmail.com">sweetsurrenderkrakow@gmail.com</a>
           <p style="margin-top:28px"><a class="btn" style="text-decoration:none" href="https://www.google.com/maps/search/?api=1&query=Zab%C5%82ocie+25+Krak%C3%B3w" target="_blank" rel="noopener">Wyznacz trasę <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></i></a></p>
         </div>
-        <div class="map reveal" style="--i:1">
-          <svg viewBox="0 0 320 200" role="img" aria-label="Schemat: kawiarnia przy ulicy Zabłocie 25">
-            <rect width="320" height="200" fill="#15151B"/>
-            <path d="M0 40h320M0 100h320M0 160h320M60 0v200M140 0v200M220 0v200M290 0v200" stroke="#F4EFE6" stroke-opacity=".09"/>
-            <path d="M0 130h320" stroke="#F4EFE6" stroke-opacity=".28" stroke-width="14"/>
-            <path d="M0 130h320" stroke="#15151B" stroke-width="1" stroke-dasharray="8 8"/>
-            <path d="M-10 175 90 130 160 130 160 70" fill="none" stroke="#FFD400" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
-            <circle class="pulse-r" cx="160" cy="64" r="22" fill="none" stroke="#FFD400" stroke-width="2"/>
-            <circle cx="160" cy="64" r="11" fill="#FFD400"/>
-            <circle cx="160" cy="64" r="4" fill="#0B0B0F"/>
-            <text x="14" y="124" font-family="Space Mono, monospace" font-size="9" fill="#B5B0A6">UL. ZABŁOCIE</text>
-            <text x="176" y="58" font-family="Anton, sans-serif" font-size="17" fill="#F4EFE6">SWEET SURRENDER</text>
-          </svg>
+        <div class="map reveal" id="map" style="--i:1">
+          <iframe title="Mapa: kawiarnia Sweet Surrender, ul. Zabłocie 25, Kraków" src="https://www.openstreetmap.org/export/embed.html?bbox=19.9583%2C50.0482%2C19.9643%2C50.0510&amp;layer=mapnik&amp;marker=50.0496477%2C19.9613006" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <span class="map-ping" aria-hidden="true"></span>
+          <p class="map-card"><b>Sweet Surrender</b><span>ul. Zabłocie 25, 30-701 Kraków</span></p>
+          <p class="map-hint mono" aria-hidden="true">Kliknij, żeby przesuwać mapę</p>
         </div>
+        <p class="map-links mono reveal">Otwórz w: <a href="https://www.google.com/maps/search/?api=1&amp;query=50.0496477,19.9613006" target="_blank" rel="noopener">Google Maps</a> · <a href="https://www.openstreetmap.org/?mlat=50.0496477&amp;mlon=19.9613006#map=18/50.0496477/19.9613006" target="_blank" rel="noopener">OpenStreetMap</a></p>
       </div>
     </div>
   </section>
@@ -436,6 +439,14 @@
     }
     ctx.globalAlpha = 1;
     if (waves.length || notes.length) fxRaf = requestAnimationFrame(fxTick); else { fxRaf = 0; ctx.clearRect(0, 0, W, H); }
+  }
+
+  /* ---------- Mapa: przesuwanie dopiero po kliknięciu (żeby nie blokować przewijania) ---------- */
+  const mapBox = document.getElementById('map');
+  if (mapBox) {
+    mapBox.addEventListener('click', () => mapBox.classList.add('active'));
+    mapBox.addEventListener('mouseleave', () => mapBox.classList.remove('active'));
+    document.addEventListener('click', e => { if (!e.composedPath().includes(mapBox)) mapBox.classList.remove('active'); });
   }
 
   /* ---------- Globalny klik ---------- */
