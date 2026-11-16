@@ -156,43 +156,15 @@
   .side b { color: var(--yellow); }
   .tracks { border-top: 1px solid var(--line); }
   .tracks li { border-bottom: 1px solid var(--line); }
-  .row { position: relative; width: 100%; display: grid; grid-template-columns: 64px minmax(0, 1.2fr) minmax(0, 1.4fr) 48px; align-items: center; gap: 16px; padding: clamp(18px, 2.4vw, 30px) 8px; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; font: inherit; transition: background-color .25s, color .25s, padding .3s var(--ease); }
+  .row { display: grid; grid-template-columns: 64px minmax(0, 1.2fr) minmax(0, 1.4fr); align-items: center; gap: 16px; padding: clamp(18px, 2.4vw, 30px) 8px; transition: padding .3s var(--ease); }
   .row .n { font: 700 14px/1 var(--mono); color: var(--muted); }
-  .row .t { font: 400 clamp(28px, 4.6vw, 64px)/1 var(--display); text-transform: uppercase; }
+  .row .t { font: 400 clamp(28px, 4.6vw, 64px)/1 var(--display); text-transform: uppercase; transition: color .25s; }
   .row .d { color: var(--muted); font-size: 16px; }
-  .row .pl { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 2px solid currentColor; transition: background-color .25s, color .25s, scale .25s var(--ease); }
-  .row .pl svg { width: 16px; height: 16px; }
-  .row:hover { background: var(--paper); color: var(--black); padding-inline: 24px; }
-  .row:hover .n, .row:hover .d { color: #3b3b40; }
-  .row:hover .pl { scale: 1.12; }
-  .row[aria-pressed="true"] { background: var(--yellow); color: var(--black); padding-inline: 24px; }
-  .row[aria-pressed="true"] .n, .row[aria-pressed="true"] .d { color: #3b3b00; }
-  .row[aria-pressed="true"] .pl { background: var(--black); color: var(--yellow); border-color: var(--black); }
-  .row.dash { cursor: default; border: 0; opacity: .85; }
-  .row.dash:hover { background: transparent; color: inherit; padding-inline: 8px; }
+  .tracks .row:hover { padding-left: 24px; }
+  .tracks .row:hover .t { color: var(--yellow); }
+  .row.dash { border: 0; opacity: .85; }
   .row.dash .t { font-size: clamp(22px, 3vw, 40px); color: var(--muted); }
-  @media (max-width: 760px) { .row { grid-template-columns: 40px 1fr 44px; } .row .d { grid-column: 2 / 3; grid-row: 2; } .row .pl { grid-column: 3; grid-row: 1 / span 2; } }
-
-  /* Odtwarzacz */
-  .player { position: fixed; left: 50%; bottom: 20px; z-index: 60; translate: -50% 0; width: min(560px, calc(100% - 24px)); display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; padding: 12px 14px 16px 18px; border-radius: 20px; background: var(--paper); color: var(--black); box-shadow: 0 20px 60px rgba(0, 0, 0, .6); animation: up .5s cubic-bezier(.34, 1.4, .64, 1); }
-  .player[hidden] { display: none; }
-  @keyframes up { from { translate: -50% 140%; } }
-  .eq { display: flex; align-items: flex-end; gap: 3px; width: 30px; height: 28px; }
-  .eq i { flex: 1; background: var(--black); height: 30%; animation: eq .9s ease-in-out infinite alternate; animation-delay: calc(var(--k) * -.25s); }
-  .eq i:nth-child(1) { --k: 1; } .eq i:nth-child(2) { --k: 3; } .eq i:nth-child(3) { --k: 2; } .eq i:nth-child(4) { --k: 4; }
-  @keyframes eq { to { height: 100%; } }
-  .pl-text { min-width: 0; line-height: 1.2; }
-  .pl-text span { display: block; color: #55555c; }
-  .pl-text strong { display: block; font: 400 22px/1.1 var(--display); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pl-ctl { display: flex; gap: 6px; }
-  .pl-ctl button { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--black); color: var(--paper); cursor: pointer; transition: scale .15s var(--ease), background-color .2s; }
-  .pl-ctl button:hover { background: var(--coral); }
-  .pl-ctl button:active { scale: .88; }
-  .pl-ctl svg { width: 16px; height: 16px; }
-  .pl-bar { position: absolute; left: 18px; right: 18px; bottom: 7px; height: 3px; background: rgba(11, 11, 15, .15); overflow: hidden; }
-  .pl-bar i { display: block; height: 100%; width: 0; background: var(--coral); animation: prog 22s linear infinite; }
-  @keyframes prog { to { width: 100%; } }
-
+  @media (max-width: 760px) { .row { grid-template-columns: 40px 1fr; } .row .d { grid-column: 2; } }
   /* Godziny jako bilety */
   .tickets { display: grid; grid-template-columns: repeat(7, 1fr); gap: 14px; margin-top: 12px; padding: 18px 4px 8px; }
   .ticket { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; padding: 22px 18px; background: var(--paper); color: var(--black); -webkit-mask: radial-gradient(circle 11px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 11px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat; mask: radial-gradient(circle 11px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 11px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat; transition: translate .35s var(--ease), rotate .35s var(--ease); cursor: pointer; }
@@ -239,8 +211,7 @@
     .js .reveal { opacity: 1; translate: 0 0; transition: none; }
     .w > span { translate: 0 0; transition: none; }
     .giant .ln > span { animation: none; }
-    .chip .dot, .eq i, .pl-bar i, .pulse-r, .fb-vinyl { animation: none; }
-    .eq i { height: 60%; } .pl-bar i { width: 40%; }
+    .chip .dot, .pulse-r, .fb-vinyl { animation: none; }
     .clicked, .clicked-pop { animation: none !important; }
     .overlay, .overlay.open, .overlay a.big, .ov-foot { transition: none !important; }
     canvas#fx, .ripple { display: none; }
@@ -318,13 +289,13 @@
     <div class="wrap">
       <span class="idx mono">(02) Menu</span>
       <h2 class="words" id="menu-t">Nasze menu zmienia się codziennie</h2>
-      <p class="side mono reveal"><span><b>Side A</b> — to, co gramy zawsze</span><span>Kliknij pozycję, żeby ją „odtworzyć”</span></p>
+      <p class="side mono reveal"><span><b>Side A</b> — to, co gramy zawsze</span></p>
       <ol class="tracks" id="tracks">
-        <li><button class="row" aria-pressed="false" data-title="Specialty Coffee"><span class="n">01</span><span class="t">Specialty Coffee</span><span class="d">Kawy z segmentu Specialty Coffee.</span><span class="pl"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></button></li>
-        <li><button class="row" aria-pressed="false" data-title="Napoje własnych receptur"><span class="n">02</span><span class="t">Napoje własnych receptur</span><span class="d">Rozmaite napoje przygotowywane według własnych receptur.</span><span class="pl"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></button></li>
-        <li><button class="row" aria-pressed="false" data-title="Świeże ciasta"><span class="n">03</span><span class="t">Świeże ciasta</span><span class="d">Ciasta, które zmieniają się z dnia na dzień.</span><span class="pl"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></button></li>
-        <li><button class="row" aria-pressed="false" data-title="Sałatki"><span class="n">04</span><span class="t">Sałatki</span><span class="d">Lekkie sałatki, inne każdego dnia.</span><span class="pl"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></button></li>
-        <li><button class="row" aria-pressed="false" data-title="Kanapki"><span class="n">05</span><span class="t">Kanapki</span><span class="d">Świeże kanapki do kawy.</span><span class="pl"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span></button></li>
+        <li class="row"><span class="n">01</span><span class="t">Specialty Coffee</span><span class="d">Kawy z segmentu Specialty Coffee.</span></li>
+        <li class="row"><span class="n">02</span><span class="t">Napoje własnych receptur</span><span class="d">Rozmaite napoje przygotowywane według własnych receptur.</span></li>
+        <li class="row"><span class="n">03</span><span class="t">Świeże ciasta</span><span class="d">Ciasta, które zmieniają się z dnia na dzień.</span></li>
+        <li class="row"><span class="n">04</span><span class="t">Sałatki</span><span class="d">Lekkie sałatki, inne każdego dnia.</span></li>
+        <li class="row"><span class="n">05</span><span class="t">Kanapki</span><span class="d">Świeże kanapki do kawy.</span></li>
       </ol>
       <p class="side mono reveal" style="margin-top:36px"><span><b>Side B</b> — propozycja</span></p>
       <div class="row dash"><span class="n">♪</span><span class="t">Menu dnia</span><span class="d">Tu może pojawiać się menu dnia, które właściciel aktualizuje sam, w minutę, bez programisty.</span></div>
@@ -378,17 +349,6 @@
     </div>
   </section>
 </main>
-
-<div class="player" id="player" role="region" aria-label="Teraz w menu" hidden>
-  <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-  <div class="pl-text"><span class="mono">Teraz w menu</span><strong id="pl-title" aria-live="polite">—</strong></div>
-  <div class="pl-ctl">
-    <button id="pl-prev" aria-label="Poprzednia pozycja"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
-    <button id="pl-next" aria-label="Następna pozycja"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5l11 7L4 19z"/></svg></button>
-    <button id="pl-close" aria-label="Zamknij odtwarzacz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-  </div>
-  <div class="pl-bar" aria-hidden="true"><i id="pl-fill"></i></div>
-</div>
 
 <footer>
   <div class="wrap">
@@ -448,21 +408,6 @@
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
   document.querySelectorAll('.words, .reveal').forEach(el => io.observe(el));
 
-  /* ---------- Lista utworów i odtwarzacz ---------- */
-  const rows = [...document.querySelectorAll('#tracks .row')], player = $('player'), title = $('pl-title'), fillBar = $('pl-fill');
-  let cur = -1;
-  function play(i) {
-    cur = (i + rows.length) % rows.length;
-    rows.forEach((r, k) => r.setAttribute('aria-pressed', k === cur));
-    title.textContent = rows[cur].dataset.title;
-    player.hidden = false;
-    fillBar.style.animation = 'none'; void fillBar.offsetWidth; fillBar.style.animation = '';
-  }
-  rows.forEach((r, i) => r.addEventListener('click', () => { if (cur === i) { cur = -1; rows[i].setAttribute('aria-pressed', 'false'); player.hidden = true; } else play(i); }));
-  $('pl-next').addEventListener('click', () => play(cur + 1));
-  $('pl-prev').addEventListener('click', () => play(cur - 1));
-  $('pl-close').addEventListener('click', () => { rows.forEach(r => r.setAttribute('aria-pressed', 'false')); cur = -1; player.hidden = true; });
-
   /* ---------- Płótno: fale dźwięku i nutki po kliknięciu ---------- */
   const cv = $('fx'), ctx = cv.getContext('2d');
   let W = 0, H = 0;
@@ -498,7 +443,7 @@
     const tr = e.target instanceof Element ? e.target : document.body;
     let x = e.clientX, y = e.clientY;
     if (e.detail === 0) { const r = tr.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top + r.height / 2; }
-    burst(x, y, tr.closest('.btn, .menu-btn, .row, .ticket') ? 1.4 : 1);
+    burst(x, y, tr.closest('.btn, .menu-btn, .ticket') ? 1.4 : 1);
     const rp = tr.closest('.btn');
     if (rp && !noMotion) {
       const r = rp.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2, s = document.createElement('span');
