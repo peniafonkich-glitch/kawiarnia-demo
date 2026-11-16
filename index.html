@@ -170,7 +170,7 @@
   .ticket { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; padding: 22px 18px; background: var(--paper); color: var(--black); -webkit-mask: radial-gradient(circle 11px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 11px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat; mask: radial-gradient(circle 11px at 0 58%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 11px at 100% 58%, #0000 98%, #000) right / 51% 100% no-repeat; transition: translate .35s var(--ease), rotate .35s var(--ease); cursor: pointer; }
   .ticket .dn { font: 400 56px/.9 var(--display); text-transform: uppercase; }
   .ticket .dl { color: #55555c; }
-  .ticket .hh { font: 700 15px/1.3 var(--mono); }
+  .ticket .hh { font: 700 clamp(11px, 1.1vw, 15px)/1.3 var(--mono); white-space: nowrap; }
   .ticket::after { content: ""; position: absolute; left: 14px; right: 14px; top: 58%; border-top: 2px dashed rgba(11, 11, 15, .3); }
   .ticket.off { background: var(--ink2); color: var(--muted); background-image: repeating-linear-gradient(135deg, transparent 0 8px, rgba(244, 239, 230, .05) 8px 10px); }
   .ticket.off .dl { color: var(--coral); }
@@ -317,12 +317,12 @@
       <span class="idx mono">(03) Godziny</span>
       <h2 class="words" id="godz-t">Bilety na kawę</h2>
       <ol class="tickets" id="tickets" aria-label="Godziny otwarcia">
-        <li class="ticket" data-day="1"><span class="dl mono">Poniedziałek</span><span class="dn">Pon</span><span class="hh">8:00 — 16:00</span></li>
-        <li class="ticket" data-day="2"><span class="dl mono">Wtorek</span><span class="dn">Wt</span><span class="hh">8:00 — 16:00</span></li>
-        <li class="ticket" data-day="3"><span class="dl mono">Środa</span><span class="dn">Śr</span><span class="hh">8:00 — 16:00</span></li>
-        <li class="ticket" data-day="4"><span class="dl mono">Czwartek</span><span class="dn">Czw</span><span class="hh">8:00 — 16:00</span></li>
-        <li class="ticket" data-day="5"><span class="dl mono">Piątek</span><span class="dn">Pt</span><span class="hh">8:00 — 16:00</span></li>
-        <li class="ticket off" data-day="6"><span class="dl mono">Sobota</span><span class="dn">Sob</span><span class="hh">nieczynne</span></li>
+        <li class="ticket" data-day="1"><span class="dl mono">Poniedziałek</span><span class="dn">Pon</span><span class="hh">8:30 — 19:00</span></li>
+        <li class="ticket" data-day="2"><span class="dl mono">Wtorek</span><span class="dn">Wt</span><span class="hh">8:30 — 19:00</span></li>
+        <li class="ticket" data-day="3"><span class="dl mono">Środa</span><span class="dn">Śr</span><span class="hh">8:30 — 19:00</span></li>
+        <li class="ticket" data-day="4"><span class="dl mono">Czwartek</span><span class="dn">Czw</span><span class="hh">8:30 — 19:00</span></li>
+        <li class="ticket" data-day="5"><span class="dl mono">Piątek</span><span class="dn">Pt</span><span class="hh">8:30 — 19:00</span></li>
+        <li class="ticket" data-day="6"><span class="dl mono">Sobota</span><span class="dn">Sob</span><span class="hh">10:00 — 19:00</span></li>
         <li class="ticket off" data-day="0"><span class="dl mono">Niedziela</span><span class="dn">Nd</span><span class="hh">nieczynne</span></li>
       </ol>
     </div>
@@ -355,7 +355,7 @@
 
 <footer>
   <div class="wrap">
-    <p>Makieta koncepcyjna przygotowana jako propozycja nowej strony. Nie jest oficjalną stroną kawiarni. Adres, telefon, e-mail, godziny otwarcia i opis oferty pochodzą z obecnej strony lokalu. Grafiki i teksty opisowe są robocze.</p>
+    <p>Makieta koncepcyjna przygotowana jako propozycja nowej strony. Nie jest oficjalną stroną kawiarni. Adres, telefon, e-mail i opis oferty pochodzą z obecnej strony lokalu, a godziny otwarcia z wpisu w serwisie Yelp. Dane do potwierdzenia z właścicielami. Grafiki i teksty opisowe są robocze.</p>
     <p class="mono">Kawa · Muzyka · Sztuka</p>
   </div>
 </footer>
@@ -370,13 +370,25 @@
   const hit = (el, x, y) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.width > 0 && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; };
   const replay = (el, cls, ms = 900) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove(cls), ms); };
 
-  /* ---------- Godziny (Europe/Warsaw): Pn–Pt 8:00–16:00 ---------- */
+  /* ---------- Godziny (Europe/Warsaw), źródło: Yelp: Pn–Pt 8:30–19:00, Sb 10–19, Nd zamknięte ---------- */
   const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date()).map(x => [x.type, x.value]));
   const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday), h = (+p.hour % 24) + (+p.minute) / 60;
   document.querySelector(`#tickets [data-day="${day}"]`)?.classList.add('today');
-  const wk = day >= 1 && day <= 5, chip = $('chip'), ct = $('chip-text');
-  if (wk && h >= 8 && h < 16) ct.textContent = 'Otwarte do 16:00';
-  else { chip.classList.add('closed'); ct.textContent = wk && h < 8 ? 'Otwieramy dziś o 8:00' : (day >= 1 && day <= 4 ? 'Zamknięte · jutro od 8:00' : 'Zamknięte · od poniedziałku'); }
+  const HOURS = { 0: null, 1: [8.5, 19], 2: [8.5, 19], 3: [8.5, 19], 4: [8.5, 19], 5: [8.5, 19], 6: [10, 19] };
+  const NEXT = ['w niedzielę', 'w poniedziałek', 'we wtorek', 'w środę', 'w czwartek', 'w piątek', 'w sobotę'];
+  const fmt = x => { const hh = Math.floor(x), mm = Math.round((x - hh) * 60); return mm ? `${hh}:${String(mm).padStart(2, '0')}` : `${hh}:00`; };
+  function hoursStatus(day, h) {
+    const t = HOURS[day];
+    if (t && h >= t[0] && h < t[1]) return { open: true, text: `Otwarte do ${fmt(t[1])}` };
+    if (t && h < t[0]) return { open: false, text: `Otwieramy dziś o ${fmt(t[0])}` };
+    for (let i = 1; i <= 7; i++) {
+      const d = (day + i) % 7;
+      if (HOURS[d]) return { open: false, text: `Zamknięte · ${i === 1 ? 'jutro' : NEXT[d]} od ${fmt(HOURS[d][0])}` };
+    }
+    return { open: false, text: 'Zamknięte' };
+  }
+  const chip = $('chip'), ct = $('chip-text'), st = hoursStatus(day, h);
+  ct.textContent = st.text; if (!st.open) chip.classList.add('closed');
 
   /* ---------- Menu na cały ekran ---------- */
   const ov = $('overlay'), mb = $('menu-btn');
